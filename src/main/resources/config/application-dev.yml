@@ -42,9 +42,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/GamesOnlineShop
-    username: GamesOnlineShop
-    password:
+    url: jdbc:postgresql://localhost:5432/games-online-shop
+    #    username: GamesOnlineShop
+    #    password:
     hikari:
       poolName: Hikari
       auto-commit: false
