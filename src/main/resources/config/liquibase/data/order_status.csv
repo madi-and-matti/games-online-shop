@@ -1,0 +1,6 @@
+id;status
+1;pending
+2;submitted
+3;shipping
+4;completed
+5;cancelled
