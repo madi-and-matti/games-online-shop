@@ -46,6 +46,135 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
+<!--        Address-->
+
+        <createTable tableName="address_state">
+            <column name="id" type="bigint" >
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="state" type="varchar(20)" />
+        </createTable>
+
+        <loadData tableName="address_state" file="config/liquibase/data/address_state.csv" separator=";">
+            <column name="id" type="numeric" />
+            <column name="state" type="string" />
+        </loadData>
+
+        <createTable tableName="address">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="street_address" type="varchar(50)" />
+            <column name="unit" type="varchar(20)" />
+            <column name="city" type="varchar(20)" />
+            <column name="state_id" type="bigint" />
+            <column name="zip_code" type="varchar(10)" />
+            <column name="user_id" type="bigint" />
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="address" baseColumnNames="state_id" constraintName="state_id" referencedTableName="address_state"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="address" baseColumnNames="user_id" constraintName="user_id" referencedTableName="jhi_user"
+                                 referencedColumnNames="id"/>
+
+<!--        Game/Product Status-->
+
+        <createTable tableName="product_status">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="status" type="varchar(30)" />
+        </createTable>
+
+        <loadData tableName="product_status" file="config/liquibase/data/product_status.csv" separator=";">
+            <column name="id" type="numeric" />
+            <column name="status" type="string" />
+        </loadData>
+
+        <createTable tableName="game">
+            <column name="id" type="varchar(15)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(200)" />
+            <column name="year_published" type="smallint" />
+            <column name="min_players" type="smallint" />
+            <column name="max_players" type="smallint" />
+            <column name="min_age" type="tinyint" />
+            <column name="price" type="smallint" />
+            <column name="status_id" type="bigint" />
+            <column name="small_img" type="varchar(200)" />
+            <column name="large_img" type="varchar(200)" />
+            <column name="user_rating" type="double" />
+            <column name="rules_url" type="varchar(200)" />
+            <column name="quantity" type="smallint" />
+            <column name="created_at" type="timestamp" />
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="game" baseColumnNames="status_id" constraintName="status_id"
+                                 referencedTableName="product_status"
+                                 referencedColumnNames="id"/>
+
+        <!--        Description-->
+
+        <createTable tableName="description">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="game_id" type="varchar(15)"/>
+            <column name="text" type="clob"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="description" baseColumnNames="game_id" constraintName="game_id"
+                                 referencedTableName="game"
+                                 referencedColumnNames="id"/>
+
+        <!--        Mechanics-->
+
+        <createTable tableName="mechanics">
+            <column name="id" type="varchar(15)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="varchar(50)"/>
+        </createTable>
+
+        <createTable tableName="game_mechanics">
+            <column name="game_id" type="varchar(15)" />
+            <column name="mechanics_id" type="varchar(15)" />
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="game_mechanics" baseColumnNames="game_id" constraintName="game_id"
+                                 referencedTableName="game"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="game_mechanics" baseColumnNames="mechanics_id"
+                                 constraintName="mechanics_id" referencedTableName="mechanics"
+                                 referencedColumnNames="id"/>
+
+        <!--        Category-->
+
+        <createTable tableName="category">
+            <column name="id" type="varchar(20)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+        </createTable>
+
+        <createTable tableName="game_category">
+            <column name="game_id" type="varchar(15)"/>
+            <column name="category_id" type="varchar(20)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="game_category" baseColumnNames="game_id" constraintName="game_id"
+                                 referencedTableName="game"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="game_category" baseColumnNames="category_id"
+                                 constraintName="category_id" referencedTableName="category"
+                                 referencedColumnNames="id"/>
+
+        <!--        Authority/Role-->
+
         <createTable tableName="jhi_authority">
             <column name="name" type="varchar(50)">
                 <constraints primaryKey="true" nullable="false"/>
@@ -97,6 +226,53 @@
                                  constraintName="fk_user_persistent_token"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
+<!--        Order-->
+
+        <createTable tableName="order">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint"/>
+            <column name="session_id" type="varchar(36)"/>
+            <column name="status_id" type="bigint"/>
+            <column name="price_total" type="smallint" />
+            <column name="created_at" type="timestamp"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="user_id" constraintName="user_id" referencedTableName="jhi_user"
+                                 referencedColumnNames="id"/>
+
+        <createTable tableName="order_status">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="status" type="varchar(20)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="status_id" constraintName="status_id" referencedTableName="order_status"
+                                 referencedColumnNames="id"/>
+
+        <loadData
+            file="config/liquibase/data/order_status.csv"
+            separator=";"
+            tableName="order_status">
+            <column name="id" type="numeric"/>
+            <column name="status" type="string"/>
+        </loadData>
+
+        <createTable tableName="order_item">
+            <column name="order_id" type="bigint"/>
+            <column name="product_id" type="varchar(15)"/>
+            <column name="price" type="smallint" />
+            <column name="quantity" type="smallint"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="order_item" baseColumnNames="order_id" constraintName="order_id" referencedTableName="order"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="order_item" baseColumnNames="product_id" constraintName="product_id" referencedTableName="game"
+                                 referencedColumnNames="id"/>
+
         <loadData
                   file="config/liquibase/data/user.csv"
                   separator=";"
@@ -199,5 +375,8 @@
             CONSTRAINT SPRING_SESSION_ATTRIBUTES_PK PRIMARY KEY (SESSION_PRIMARY_ID, ATTRIBUTE_NAME),
             CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION(PRIMARY_ID) ON DELETE CASCADE
             );</sql>
+
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="session_id" constraintName="session_id" referencedTableName="spring_session"
+                                 referencedColumnNames="session_id"/>
     </changeSet>
 </databaseChangeLog>
