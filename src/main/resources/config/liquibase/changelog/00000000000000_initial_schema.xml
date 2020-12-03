@@ -15,7 +15,7 @@
         The initial schema has the '00000000000001' id, so that it is over-written if we re-generate it.
     -->
     <changeSet id="00000000000001" author="jhipster">
-        <createTable tableName="jhi_user">
+        <createTable tableName="shop_user">
             <column name="id" type="bigint" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -75,7 +75,7 @@
         <addForeignKeyConstraint baseTableName="address" baseColumnNames="state_id" constraintName="state_id" referencedTableName="address_state"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="address" baseColumnNames="user_id" constraintName="user_id" referencedTableName="jhi_user"
+        <addForeignKeyConstraint baseTableName="address" baseColumnNames="user_id" constraintName="user_id" referencedTableName="shop_user"
                                  referencedColumnNames="id"/>
 
 <!--        Game/Product Status-->
@@ -175,13 +175,13 @@
 
         <!--        Authority/Role-->
 
-        <createTable tableName="jhi_authority">
+        <createTable tableName="authority">
             <column name="name" type="varchar(50)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
         </createTable>
 
-        <createTable tableName="jhi_user_authority">
+        <createTable tableName="user_authority">
             <column name="user_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -190,7 +190,7 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="user_id, authority_name" tableName="jhi_user_authority"/>
+        <addPrimaryKey columnNames="user_id, authority_name" tableName="user_authority"/>
 
         <createTable tableName="jhi_persistent_token">
             <column name="series" type="varchar(20)">
@@ -206,26 +206,26 @@
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="authority_name"
-                                 baseTableName="jhi_user_authority"
+                                 baseTableName="user_authority"
                                  constraintName="fk_authority_name"
                                  referencedColumnNames="name"
-                                 referencedTableName="jhi_authority"/>
+                                 referencedTableName="authority"/>
 
         <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="jhi_user_authority"
+                                 baseTableName="user_authority"
                                  constraintName="fk_user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
+                                 referencedTableName="shop_user"/>
 
         <addNotNullConstraint   columnName="password_hash"
                                 columnDataType="varchar(60)"
-                                tableName="jhi_user"/>
+                                tableName="shop_user"/>
 
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="jhi_persistent_token"
                                  constraintName="fk_user_persistent_token"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
+                                 referencedTableName="shop_user"/>
 <!--        Order-->
 
         <createTable tableName="order">
@@ -236,10 +236,14 @@
             <column name="session_id" type="varchar(36)"/>
             <column name="status_id" type="bigint"/>
             <column name="price_total" type="smallint" />
+            <column name="address_id" type="bigint"/>
             <column name="created_at" type="timestamp"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="order" baseColumnNames="user_id" constraintName="user_id" referencedTableName="jhi_user"
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="user_id" constraintName="user_id" referencedTableName="shop_user"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="address_id" constraintName="address_id" referencedTableName="address"
                                  referencedColumnNames="id"/>
 
         <createTable tableName="order_status">
@@ -276,23 +280,23 @@
         <loadData
                   file="config/liquibase/data/user.csv"
                   separator=";"
-                  tableName="jhi_user">
+                  tableName="shop_user">
             <column name="id" type="numeric"/>
             <column name="activated" type="boolean"/>
             <column name="created_date" type="timestamp"/>
         </loadData>
-        <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="shop_user" columnName="created_date" columnDataType="datetime"/>
         <loadData
                   file="config/liquibase/data/authority.csv"
                   separator=";"
-                  tableName="jhi_authority">
+                  tableName="authority">
             <column name="name" type="string"/>
         </loadData>
 
         <loadData
                   file="config/liquibase/data/user_authority.csv"
                   separator=";"
-                  tableName="jhi_user_authority">
+                  tableName="user_authority">
             <column name="user_id" type="numeric"/>
         </loadData>
         <createTable tableName="jhi_persistent_audit_event">
@@ -380,3 +384,4 @@
                                  referencedColumnNames="session_id"/>
     </changeSet>
 </databaseChangeLog>
+
