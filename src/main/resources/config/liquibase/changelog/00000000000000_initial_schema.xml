@@ -46,7 +46,17 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
-<!--        Address-->
+        <loadData
+            file="config/liquibase/data/user.csv"
+            separator=";"
+            tableName="shop_user">
+            <column name="id" type="numeric"/>
+            <column name="activated" type="boolean"/>
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <dropDefaultValue tableName="shop_user" columnName="created_date" columnDataType="datetime"/>
+
+        <!--        Address-->
 
         <createTable tableName="address_state">
             <column name="id" type="bigint" >
@@ -66,7 +76,7 @@
             </column>
             <column name="street_address" type="varchar(50)" />
             <column name="unit" type="varchar(20)" />
-            <column name="city" type="varchar(20)" />
+            <column name="city" type="varchar(50)" />
             <column name="state_id" type="bigint" />
             <column name="zip_code" type="varchar(10)" />
             <column name="user_id" type="bigint" />
@@ -77,6 +87,15 @@
 
         <addForeignKeyConstraint baseTableName="address" baseColumnNames="user_id" constraintName="user_id" referencedTableName="shop_user"
                                  referencedColumnNames="id"/>
+
+        <loadData
+            file="config/liquibase/data/address.csv"
+            separator=";"
+            tableName="address">
+            <column name="id" type="numeric"/>
+            <column name="state_id" type="numeric"/>
+            <column name="user_id" type="numeric"/>
+        </loadData>
 
 <!--        Game/Product Status-->
 
@@ -101,12 +120,12 @@
             <column name="min_players" type="smallint" />
             <column name="max_players" type="smallint" />
             <column name="min_age" type="tinyint" />
-            <column name="price" type="smallint" />
+            <column name="price" type="bigint" />
             <column name="status_id" type="bigint" />
-            <column name="small_img" type="varchar(200)" />
-            <column name="large_img" type="varchar(200)" />
+            <column name="small_img" type="varchar(300)" />
+            <column name="large_img" type="varchar(300)" />
             <column name="user_rating" type="double" />
-            <column name="rules_url" type="varchar(200)" />
+            <column name="rules_url" type="varchar(500)" />
             <column name="quantity" type="smallint" />
             <column name="created_at" type="timestamp" />
         </createTable>
@@ -114,6 +133,21 @@
         <addForeignKeyConstraint baseTableName="game" baseColumnNames="status_id" constraintName="status_id"
                                  referencedTableName="product_status"
                                  referencedColumnNames="id"/>
+
+        <loadData
+            file="config/liquibase/data/game.csv"
+            separator=";"
+            tableName="game">
+            <column name="id" type="string"/>
+            <column name="year_published" type="numeric"/>
+            <column name="min_players" type="numeric"/>
+            <column name="max_players" type="numeric"/>
+            <column name="min_age" type="numeric"/>
+            <column name="price" type="numeric"/>
+            <column name="status_id" type="numeric"/>
+            <column name="user_rating" type="numeric"/>
+            <column name="quantity" type="numeric"/>
+        </loadData>
 
         <!--        Description-->
 
@@ -129,6 +163,10 @@
                                  referencedTableName="game"
                                  referencedColumnNames="id"/>
 
+        <loadData tableName="description" file="config/liquibase/data/description.csv" separator=";">
+            <column name="id" type="numeric" />
+        </loadData>
+
         <!--        Mechanics-->
 
         <createTable tableName="mechanics">
@@ -137,6 +175,14 @@
             </column>
             <column name="name" type="varchar(50)"/>
         </createTable>
+
+        <loadData
+            file="config/liquibase/data/mechanics.csv"
+            separator=";"
+            tableName="mechanics">
+            <column name="id" type="string"/>
+            <column name="name" type="string"/>
+        </loadData>
 
         <createTable tableName="game_mechanics">
             <column name="game_id" type="varchar(15)" />
@@ -151,6 +197,14 @@
                                  constraintName="mechanics_id" referencedTableName="mechanics"
                                  referencedColumnNames="id"/>
 
+        <loadData
+            file="config/liquibase/data/game_mechanics.csv"
+            separator=";"
+            tableName="game_mechanics">
+            <column name="game_id" type="string"/>
+            <column name="mechanics_id" type="string"/>
+        </loadData>
+
         <!--        Category-->
 
         <createTable tableName="category">
@@ -159,6 +213,14 @@
             </column>
             <column name="name" type="varchar(50)"/>
         </createTable>
+
+        <loadData
+            file="config/liquibase/data/category.csv"
+            separator=";"
+            tableName="category">
+            <column name="id" type="string"/>
+            <column name="name" type="string"/>
+        </loadData>
 
         <createTable tableName="game_category">
             <column name="game_id" type="varchar(15)"/>
@@ -172,6 +234,14 @@
         <addForeignKeyConstraint baseTableName="game_category" baseColumnNames="category_id"
                                  constraintName="category_id" referencedTableName="category"
                                  referencedColumnNames="id"/>
+
+        <loadData
+            file="config/liquibase/data/game_category.csv"
+            separator=";"
+            tableName="game_category">
+            <column name="game_id" type="string"/>
+            <column name="category_id" type="string"/>
+        </loadData>
 
         <!--        Authority/Role-->
 
@@ -226,6 +296,21 @@
                                  constraintName="fk_user_persistent_token"
                                  referencedColumnNames="id"
                                  referencedTableName="shop_user"/>
+
+        <loadData
+            file="config/liquibase/data/authority.csv"
+            separator=";"
+            tableName="authority">
+            <column name="name" type="string"/>
+        </loadData>
+
+        <loadData
+            file="config/liquibase/data/user_authority.csv"
+            separator=";"
+            tableName="user_authority">
+            <column name="user_id" type="numeric"/>
+        </loadData>
+
 <!--        Order-->
 
         <createTable tableName="order">
@@ -235,7 +320,7 @@
             <column name="user_id" type="bigint"/>
             <column name="session_id" type="varchar(36)"/>
             <column name="status_id" type="bigint"/>
-            <column name="price_total" type="smallint" />
+            <column name="price_total" type="bigint" />
             <column name="address_id" type="bigint"/>
             <column name="created_at" type="timestamp"/>
         </createTable>
@@ -264,10 +349,20 @@
             <column name="status" type="string"/>
         </loadData>
 
+        <loadData
+            file="config/liquibase/data/order.csv"
+            separator=";"
+            tableName="order">
+            <column name="id" type="numeric"/>
+            <column name="user_id" type="numeric"/>
+            <column name="status_id" type="numeric"/>
+            <column name="price_total" type="numeric"/>
+        </loadData>
+
         <createTable tableName="order_item">
             <column name="order_id" type="bigint"/>
             <column name="product_id" type="varchar(15)"/>
-            <column name="price" type="smallint" />
+            <column name="price" type="bigint" />
             <column name="quantity" type="smallint"/>
         </createTable>
 
@@ -278,27 +373,15 @@
                                  referencedColumnNames="id"/>
 
         <loadData
-                  file="config/liquibase/data/user.csv"
-                  separator=";"
-                  tableName="shop_user">
-            <column name="id" type="numeric"/>
-            <column name="activated" type="boolean"/>
-            <column name="created_date" type="timestamp"/>
-        </loadData>
-        <dropDefaultValue tableName="shop_user" columnName="created_date" columnDataType="datetime"/>
-        <loadData
-                  file="config/liquibase/data/authority.csv"
-                  separator=";"
-                  tableName="authority">
-            <column name="name" type="string"/>
+            file="config/liquibase/data/order_item.csv"
+            separator=";"
+            tableName="order_item">
+            <column name="order_id" type="numeric"/>
+            <column name="price" type="numeric"/>
+            <column name="quantity" type="numeric"/>
         </loadData>
 
-        <loadData
-                  file="config/liquibase/data/user_authority.csv"
-                  separator=";"
-                  tableName="user_authority">
-            <column name="user_id" type="numeric"/>
-        </loadData>
+
         <createTable tableName="jhi_persistent_audit_event">
             <column name="event_id" type="bigint" >
                 <constraints primaryKey="true" nullable="false"/>
@@ -339,6 +422,7 @@
                                  constraintName="fk_evt_pers_audit_evt_data"
                                  referencedColumnNames="event_id"
                                  referencedTableName="jhi_persistent_audit_event"/>
+
     </changeSet>
 
     <changeSet author="jhipster" id="00000000000002" context="test">
