@@ -148,7 +148,7 @@ const seedAllGames = async () => {
   }
 
   function seedOrders() {
-    const orderStream = fs.createWriteStream("./data/order.csv", {flags: "w"});
+    const orderStream = fs.createWriteStream("./data/shop_order.csv", {flags: "w"});
     orderStream.write("id;user_id;status_id;price_total;created_by;last_modified_by\n");
 
     for (let i = 1; i <= 50; i++) {
