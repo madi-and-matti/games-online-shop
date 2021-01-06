@@ -82,10 +82,10 @@
             <column name="user_id" type="bigint" />
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="address" baseColumnNames="state_id" constraintName="state_id" referencedTableName="address_state"
+        <addForeignKeyConstraint baseTableName="address" baseColumnNames="state_id" constraintName="address_state_id" referencedTableName="address_state"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="address" baseColumnNames="user_id" constraintName="user_id" referencedTableName="shop_user"
+        <addForeignKeyConstraint baseTableName="address" baseColumnNames="user_id" constraintName="address_user_id" referencedTableName="shop_user"
                                  referencedColumnNames="id"/>
 
         <loadData
@@ -130,7 +130,7 @@
             <column name="created_at" type="timestamp" />
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="game" baseColumnNames="status_id" constraintName="status_id"
+        <addForeignKeyConstraint baseTableName="game" baseColumnNames="status_id" constraintName="product_status_id"
                                  referencedTableName="product_status"
                                  referencedColumnNames="id"/>
 
@@ -159,7 +159,7 @@
             <column name="text" type="clob"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="description" baseColumnNames="game_id" constraintName="game_id"
+        <addForeignKeyConstraint baseTableName="description" baseColumnNames="game_id" constraintName="description_game_id"
                                  referencedTableName="game"
                                  referencedColumnNames="id"/>
 
@@ -189,7 +189,7 @@
             <column name="mechanics_id" type="varchar(15)" />
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="game_mechanics" baseColumnNames="game_id" constraintName="game_id"
+        <addForeignKeyConstraint baseTableName="game_mechanics" baseColumnNames="game_id" constraintName="mechanics_game_id"
                                  referencedTableName="game"
                                  referencedColumnNames="id"/>
 
@@ -227,7 +227,7 @@
             <column name="category_id" type="varchar(20)"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="game_category" baseColumnNames="game_id" constraintName="game_id"
+        <addForeignKeyConstraint baseTableName="game_category" baseColumnNames="game_id" constraintName="categories_game_id"
                                  referencedTableName="game"
                                  referencedColumnNames="id"/>
 
@@ -325,10 +325,10 @@
             <column name="created_at" type="timestamp"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="order" baseColumnNames="user_id" constraintName="user_id" referencedTableName="shop_user"
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="user_id" constraintName="order_user_id" referencedTableName="shop_user"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="order" baseColumnNames="address_id" constraintName="address_id" referencedTableName="address"
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="address_id" constraintName="order_address_id" referencedTableName="address"
                                  referencedColumnNames="id"/>
 
         <createTable tableName="order_status">
@@ -338,7 +338,7 @@
             <column name="status" type="varchar(20)"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="order" baseColumnNames="status_id" constraintName="status_id" referencedTableName="order_status"
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="status_id" constraintName="order_status_id" referencedTableName="order_status"
                                  referencedColumnNames="id"/>
 
         <loadData
@@ -464,7 +464,7 @@
             CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION(PRIMARY_ID) ON DELETE CASCADE
             );</sql>
 
-        <addForeignKeyConstraint baseTableName="order" baseColumnNames="session_id" constraintName="session_id" referencedTableName="spring_session"
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="session_id" constraintName="order_session_id" referencedTableName="spring_session"
                                  referencedColumnNames="session_id"/>
     </changeSet>
 </databaseChangeLog>
