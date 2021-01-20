@@ -80,6 +80,12 @@
             <column name="state_id" type="bigint" />
             <column name="zip_code" type="varchar(10)" />
             <column name="user_id" type="bigint" />
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="address" baseColumnNames="state_id" constraintName="address_state_id" referencedTableName="address_state"
@@ -127,7 +133,12 @@
             <column name="user_rating" type="double" />
             <column name="rules_url" type="varchar(500)" />
             <column name="quantity" type="smallint" />
-            <column name="created_at" type="timestamp" />
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="game" baseColumnNames="status_id" constraintName="product_status_id"
@@ -157,6 +168,12 @@
             </column>
             <column name="game_id" type="varchar(15)"/>
             <column name="text" type="clob"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="description" baseColumnNames="game_id" constraintName="description_game_id"
@@ -322,7 +339,12 @@
             <column name="status_id" type="bigint"/>
             <column name="price_total" type="bigint" />
             <column name="address_id" type="bigint"/>
-            <column name="created_at" type="timestamp"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="order" baseColumnNames="user_id" constraintName="order_user_id" referencedTableName="shop_user"
@@ -364,6 +386,12 @@
             <column name="product_id" type="varchar(15)"/>
             <column name="price" type="bigint" />
             <column name="quantity" type="smallint"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="order_item" baseColumnNames="order_id" constraintName="order_id" referencedTableName="order"

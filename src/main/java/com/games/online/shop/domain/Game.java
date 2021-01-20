@@ -1,8 +1,6 @@
 package com.games.online.shop.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -22,7 +20,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Game implements Serializable {
+public class Game extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -86,9 +84,6 @@ public class Game implements Serializable {
         inverseJoinColumns = { @JoinColumn(name = "category_id", referencedColumnName = "id") }
     )
     private Set<Category> categories = new HashSet<>();
-
-    @Column(name = "created_at", insertable = false, updatable = false)
-    private Instant createdDate;
 
     public String getId() {
         return id;
@@ -216,11 +211,6 @@ public class Game implements Serializable {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
-    }
-
-    @JsonIgnore
-    public Instant getCreatedDate() {
-        return createdDate;
     }
 
     @Override
