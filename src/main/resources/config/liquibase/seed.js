@@ -118,8 +118,8 @@ const seedAllGames = async () => {
     const gameId = game.id;
     if (!alreadySeeded.has(gameId)) {
       const quantity = getQuantity(game.description);
-      gameStream.write(`${gameId};"${game.name}";${game.year_published};${game.min_players};${game.max_players};${game.min_age};${Math.floor(game.price * 100)};${getStatus(quantity)};${game.images.small};${game.images.large};${game.average_user_rating};${game.rules_url};${quantity}\n`);
-      descriptionStream.write(`${++descriptionId};${gameId};"${game.description.split("\r\n").join("<br />").split("\n").join("<br />")}"\n`);
+      gameStream.write(`${gameId};"${game.name}";${game.year_published};${game.min_players};${game.max_players};${game.min_age};${Math.floor(game.price * 100)};${getStatus(quantity)};${game.images.small};${game.images.large};${game.average_user_rating};${game.rules_url};${quantity};system;system\n`);
+      descriptionStream.write(`${++descriptionId};${gameId};"${game.description.split("\r\n").join("<br />").split("\n").join("<br />")};system;system"\n`);
       game.categories.forEach(cat => {
         if (categoryIds.has(cat.id)) {
           joinCategoryStream.write(`${gameId};${cat.id}\n`);
@@ -142,20 +142,20 @@ const seedAllGames = async () => {
       const totalCost = price * quantity;
 
 
-      orderItemStream.write(`${orderId};${game.id};${price};${quantity}\n`);
+      orderItemStream.write(`${orderId};${game.id};${price};${quantity};system;system\n`);
       ordersTotalPrices[orderId] += totalCost;
     }
   }
 
   function seedOrders() {
     const orderStream = fs.createWriteStream("./data/order.csv", {flags: "w"});
-    orderStream.write("id;user_id;status_id;price_total\n");
+    orderStream.write("id;user_id;status_id;price_total;created_by;last_modified_by\n");
 
     for (let i = 1; i <= 50; i++) {
       if (ordersTotalPrices[i]) {
         const userId = Math.ceil(Math.random() * 1000);
         const statusId = getStatusId(i);
-        orderStream.write(`${i};${userId};${statusId};${ordersTotalPrices[i]}\n`);
+        orderStream.write(`${i};${userId};${statusId};${ordersTotalPrices[i]};system;system\n`);
       }
     }
 
@@ -182,10 +182,10 @@ const seedAllGames = async () => {
 // UTILITY FUNCTIONS
 function createGameStreams() {
   const gameStream = fs.createWriteStream("./data/game.csv", {flags: "w"});
-  gameStream.write("id;name;year_published;min_players;max_players;min_age;price;status_id;small_img;large_img;user_rating;rules_url;quantity\n");
+  gameStream.write("id;name;year_published;min_players;max_players;min_age;price;status_id;small_img;large_img;user_rating;rules_url;quantity;created_by;last_modified_by\n");
 
   const descriptionStream = fs.createWriteStream("./data/description.csv", {flags: "w"});
-  descriptionStream.write("id;game_id;text\n");
+  descriptionStream.write("id;game_id;text;created_by;last_modified_by\n");
 
   const categoryStream = fs.createWriteStream("./data/category.csv", {flags: "w"});
   categoryStream.write("id;name\n");
@@ -200,7 +200,7 @@ function createGameStreams() {
   joinMechanicsStream.write("game_id;mechanics_id\n");
 
   const orderItemStream = fs.createWriteStream("./data/order_item.csv", {flags: "w"});
-  orderItemStream.write("order_id;product_id;price;quantity\n");
+  orderItemStream.write("order_id;product_id;price;quantity;created_by;last_modified_by\n");
 
   return {
     gameStream,
@@ -277,7 +277,7 @@ async function seedUsers() {
       addressId = Math.floor(Math.random() * 50000);
     }
     addressIds.add(addressId);
-    userAddressStream.write(`${addressId};${faker.address.streetAddress()};;${faker.address.city()};${Math.ceil(Math.random() * 10)};${faker.address.zipCode()};${i}\n`);
+    userAddressStream.write(`${addressId};${faker.address.streetAddress()};;${faker.address.city()};${Math.ceil(Math.random() * 10)};${faker.address.zipCode()};${i};system;system\n`);
   }
 
   userStream.end();
@@ -291,7 +291,7 @@ function createUserStreams() {
   writeOriginalData(userStream, userAuthStream);
 
   const userAddressStream = fs.createWriteStream("./data/address.csv", {flags: "w"});
-  userAddressStream.write("id;street_address;unit;city;state_id;zip_code;user_id\n");
+  userAddressStream.write("id;street_address;unit;city;state_id;zip_code;user_id;created_by;last_modified_by\n");
 
   return {
     userStream,
