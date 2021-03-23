@@ -69,7 +69,7 @@ public class Game extends AbstractAuditingEntity implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
     private Description description;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH }, fetch = FetchType.EAGER)
     @JoinTable(
         name = "game_mechanics",
         joinColumns = { @JoinColumn(name = "game_id", referencedColumnName = "id") },
@@ -77,7 +77,7 @@ public class Game extends AbstractAuditingEntity implements Serializable {
     )
     private Set<Mechanics> mechanics = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH }, fetch = FetchType.EAGER)
     @JoinTable(
         name = "game_category",
         joinColumns = { @JoinColumn(name = "game_id", referencedColumnName = "id") },
@@ -194,6 +194,7 @@ public class Game extends AbstractAuditingEntity implements Serializable {
     }
 
     public void setDescription(Description description) {
+        description.setGame(this);
         this.description = description;
     }
 
@@ -201,16 +202,24 @@ public class Game extends AbstractAuditingEntity implements Serializable {
         return mechanics;
     }
 
-    public void setMechanics(Set<Mechanics> mechanics) {
-        this.mechanics = mechanics;
+    public void addMechanics(Mechanics mechanics) {
+        this.mechanics.add(mechanics);
+    }
+
+    public void removeMechanics(Mechanics mechanics) {
+        this.mechanics.remove(mechanics);
     }
 
     public Set<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
+    public void addCategory(Category category) {
+        this.categories.add(category);
+    }
+
+    public void removeCategory(Category category) {
+        this.categories.remove(category);
     }
 
     @Override
