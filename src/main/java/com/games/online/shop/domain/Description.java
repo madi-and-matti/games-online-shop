@@ -17,7 +17,7 @@ public class Description extends AbstractAuditingEntity implements Serializable 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "description_sequence")
     private Long id;
 
     @NotNull
