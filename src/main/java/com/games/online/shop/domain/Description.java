@@ -1,5 +1,6 @@
 package com.games.online.shop.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Type;
 
 @Entity
 public class Description extends AbstractAuditingEntity implements Serializable {
@@ -23,9 +25,11 @@ public class Description extends AbstractAuditingEntity implements Serializable 
     @NotNull
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id", referencedColumnName = "id", nullable = false)
+    @JsonIgnore
     private Game game;
 
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     private String text;
 
     public Long getId() {
