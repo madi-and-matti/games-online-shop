@@ -31,6 +31,11 @@ public class Game extends AbstractAuditingEntity implements Serializable {
     @Size(max = 200)
     private String name;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
+    private Description description;
+
+    private Long price;
+
     @Column(name = "year_published")
     private Short yearPublished;
 
@@ -42,12 +47,6 @@ public class Game extends AbstractAuditingEntity implements Serializable {
 
     @Column(name = "min_age")
     private Byte minimumAge;
-
-    private Long price;
-
-    @ManyToOne
-    @JoinColumn(name = "status_id", referencedColumnName = "id")
-    private ProductStatus status;
 
     @Size(max = 300)
     @Column(name = "small_img")
@@ -66,8 +65,9 @@ public class Game extends AbstractAuditingEntity implements Serializable {
 
     private Short quantity;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
-    private Description description;
+    @ManyToOne
+    @JoinColumn(name = "status_id", referencedColumnName = "id")
+    private ProductStatus status;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH }, fetch = FetchType.EAGER)
     @JoinTable(
