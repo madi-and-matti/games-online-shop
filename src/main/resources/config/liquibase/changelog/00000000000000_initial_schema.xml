@@ -168,7 +168,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="game_id" type="varchar(15)"/>
-            <column name="text" type="clob"/>
+            <column name="text" type="${clobType}"/>
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
