@@ -331,7 +331,7 @@
 
 <!--        Order-->
 
-        <createTable tableName="order">
+        <createTable tableName="shop_order">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -348,10 +348,10 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="order" baseColumnNames="user_id" constraintName="order_user_id" referencedTableName="shop_user"
+        <addForeignKeyConstraint baseTableName="shop_order" baseColumnNames="user_id" constraintName="order_user_id" referencedTableName="shop_user"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint baseTableName="order" baseColumnNames="address_id" constraintName="order_address_id" referencedTableName="address"
+        <addForeignKeyConstraint baseTableName="shop_order" baseColumnNames="address_id" constraintName="order_address_id" referencedTableName="address"
                                  referencedColumnNames="id"/>
 
         <createTable tableName="order_status">
@@ -361,7 +361,7 @@
             <column name="status" type="varchar(20)"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="order" baseColumnNames="status_id" constraintName="order_status_id" referencedTableName="order_status"
+        <addForeignKeyConstraint baseTableName="shop_order" baseColumnNames="status_id" constraintName="order_status_id" referencedTableName="order_status"
                                  referencedColumnNames="id"/>
 
         <loadData
@@ -373,9 +373,9 @@
         </loadData>
 
         <loadData
-            file="config/liquibase/data/order.csv"
+            file="config/liquibase/data/shop_order.csv"
             separator=";"
-            tableName="order">
+            tableName="shop_order">
             <column name="id" type="numeric"/>
             <column name="user_id" type="numeric"/>
             <column name="status_id" type="numeric"/>
@@ -395,7 +395,7 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="order_item" baseColumnNames="order_id" constraintName="order_id" referencedTableName="order"
+        <addForeignKeyConstraint baseTableName="order_item" baseColumnNames="order_id" constraintName="order_id" referencedTableName="shop_order"
                                  referencedColumnNames="id"/>
 
         <addForeignKeyConstraint baseTableName="order_item" baseColumnNames="product_id" constraintName="product_id" referencedTableName="game"
@@ -493,7 +493,7 @@
             CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION(PRIMARY_ID) ON DELETE CASCADE
             );</sql>
 
-        <addForeignKeyConstraint baseTableName="order" baseColumnNames="session_id" constraintName="order_session_id" referencedTableName="spring_session"
+        <addForeignKeyConstraint baseTableName="shop_order" baseColumnNames="session_id" constraintName="primary_id" referencedTableName="spring_session"
                                  referencedColumnNames="session_id"/>
     </changeSet>
 </databaseChangeLog>
