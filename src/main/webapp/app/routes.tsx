@@ -15,6 +15,11 @@ import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import PageNotFound from 'app/shared/error/page-not-found';
 import { AUTHORITIES } from 'app/config/constants';
 
+const Games = Loadable({
+  loader: () => import(/* webpackChunkName: "games" */ 'app/modules/games'),
+  loading: () => <div>loading ...</div>,
+});
+
 const Account = Loadable({
   loader: () => import(/* webpackChunkName: "account" */ 'app/modules/account'),
   loading: () => <div>loading ...</div>,
@@ -28,6 +33,7 @@ const Admin = Loadable({
 const Routes = () => (
   <div className="view-routes">
     <Switch>
+      <ErrorBoundaryRoute path="/games" component={Games} />
       <ErrorBoundaryRoute path="/login" component={Login} />
       <ErrorBoundaryRoute path="/logout" component={Logout} />
       <ErrorBoundaryRoute path="/account/register" component={Register} />

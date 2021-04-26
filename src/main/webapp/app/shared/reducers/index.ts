@@ -4,6 +4,7 @@ import { loadingBarReducer as loadingBar } from 'react-redux-loading-bar';
 import authentication, { AuthenticationState } from './authentication';
 import applicationProfile, { ApplicationProfileState } from './application-profile';
 
+import games, { GamesState } from 'app/modules/games/games.reducer';
 import administration, { AdministrationState } from 'app/modules/administration/administration.reducer';
 import userManagement, { UserManagementState } from 'app/modules/administration/user-management/user-management.reducer';
 import register, { RegisterState } from 'app/modules/account/register/register.reducer';
@@ -15,6 +16,7 @@ import sessions, { SessionsState } from 'app/modules/account/sessions/sessions.r
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
+  readonly games: GamesState;
   readonly authentication: AuthenticationState;
   readonly applicationProfile: ApplicationProfileState;
   readonly administration: AdministrationState;
@@ -30,6 +32,7 @@ export interface IRootState {
 }
 
 const rootReducer = combineReducers<IRootState>({
+  games,
   authentication,
   applicationProfile,
   administration,
