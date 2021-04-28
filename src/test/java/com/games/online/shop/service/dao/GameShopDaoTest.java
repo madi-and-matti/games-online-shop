@@ -6,9 +6,14 @@ import com.games.online.shop.GamesOnlineShopApp;
 import com.games.online.shop.domain.Category;
 import com.games.online.shop.domain.Game;
 import com.games.online.shop.domain.Mechanics;
+import com.games.online.shop.domain.Order;
+import com.games.online.shop.domain.OrderItem;
+import com.games.online.shop.domain.OrderItemId;
 import com.games.online.shop.repository.CategoryRepository;
 import com.games.online.shop.repository.GameRepository;
 import com.games.online.shop.repository.MechanicsRepository;
+import com.games.online.shop.repository.OrderItemRepository;
+import com.games.online.shop.repository.OrderRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +40,12 @@ public class GameShopDaoTest {
 
     @Autowired
     MechanicsRepository mechanicsRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
 
     @Test
     public void testDeleteCategoryCascading() {
@@ -88,6 +99,42 @@ public class GameShopDaoTest {
         assertThat(foundGame.getMechanics()).hasSize(1);
     }
 
+    @Test
+    public void testAddOrderItem() {
+        OrderItem orderItem = createOrderItem();
+        Order order = new Order();
+        orderRepository.save(order);
+
+        gameShopDao.addOrderItem(order.getId(), orderItem);
+
+        Order orderFromDb = orderRepository.getOne(order.getId());
+        assertThat(orderFromDb.getOrderItems()).isNotEmpty();
+        assertThat(orderFromDb.getOrderItems()).hasSize(1);
+    }
+
+    @Test
+    public void testDeleteOrderItem() {
+        Order order = new Order();
+        orderRepository.saveAndFlush(order);
+
+        OrderItem orderItem = createOrderItem();
+        OrderItemId orderItemId = new OrderItemId(order.getId(), orderItem.getGame().getId());
+        orderItem.setId(orderItemId);
+        orderItem.setOrder(order);
+        String orderItemGameId = orderItem.getGame().getId();
+        List<String> idList = new ArrayList<>();
+        idList.add(orderItemGameId);
+
+        order.addOrderItem(orderItem);
+        orderItemRepository.save(orderItem);
+
+        gameShopDao.deleteOrderItem(order.getId(), orderItem);
+        Order orderFromDb = orderRepository.getOne(order.getId());
+        List<Game> gameFromDbList = gameRepository.findAllById(idList);
+        assertThat(orderFromDb.getOrderItems()).isEmpty();
+        assertThat(gameFromDbList).hasSize(1);
+    }
+
     private Game createGame(String name, List<Category> categories, List<Mechanics> mechanics) {
         Game game = new Game();
         game.setName(name);
@@ -116,5 +163,15 @@ public class GameShopDaoTest {
         mechanicsRepository.saveAndFlush(mechanics);
 
         return mechanics;
+    }
+
+    private OrderItem createOrderItem() {
+        Mechanics mechanics1 = createMechanics("Test mechanics");
+        Mechanics mechanics2 = createMechanics("Second test mechanics");
+        Game game = createGame(("Test Game"), null, Arrays.asList(mechanics1, mechanics2));
+
+        OrderItem orderItem = new OrderItem();
+        orderItem.setGame(game);
+        return orderItem;
     }
 }
