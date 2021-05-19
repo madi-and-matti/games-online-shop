@@ -1,6 +1,5 @@
 import {RouteComponentProps} from "react-router-dom";
 import {connect} from "react-redux";
-import {AllGames} from "app/modules/games/all-games";
 import {IRootState} from "app/shared/reducers";
 import {ACTION_TYPES, getSingleGame} from "app/modules/games/games.reducer";
 import React, {useEffect, useState} from "react";

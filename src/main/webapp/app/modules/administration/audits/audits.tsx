@@ -11,6 +11,7 @@ import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-u
 
 import { IRootState } from 'app/shared/reducers';
 import { getAudits } from '../administration.reducer';
+import Pagination from "app/shared/layout/pagination/pagination";
 
 export interface IAuditsPageProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -136,24 +137,7 @@ export const AuditsPage = (props: IAuditsPageProps) => {
       ) : (
         <div className="alert alert-warning">No audit found</div>
       )}
-      {props.totalItems ? (
-        <div className={audits && audits.length > 0 ? '' : 'd-none'}>
-          <Row className="justify-content-center">
-            <JhiItemCount page={pagination.activePage} total={totalItems} itemsPerPage={pagination.itemsPerPage} i18nEnabled />
-          </Row>
-          <Row className="justify-content-center">
-            <JhiPagination
-              activePage={pagination.activePage}
-              onSelect={handlePagination}
-              maxButtons={5}
-              itemsPerPage={pagination.itemsPerPage}
-              totalItems={props.totalItems}
-            />
-          </Row>
-        </div>
-      ) : (
-        ''
-      )}
+      <Pagination pagination={pagination} handlePagination={handlePagination} items={audits} totalItems={props.totalItems} />
     </div>
   );
 };

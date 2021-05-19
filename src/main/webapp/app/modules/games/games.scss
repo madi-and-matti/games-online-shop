@@ -1,0 +1,23 @@
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+/* ==========================================================================
+All Games Card
+========================================================================== */
+.all-games.card {
+  height: 95%;
+}
+
+.all-games p {
+  margin-bottom: 0;
+}
+
+.all-games .card-body {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+img.card-img-top {
+  width: 175px;
+  height: 175px;
+  object-fit: contain;
+}

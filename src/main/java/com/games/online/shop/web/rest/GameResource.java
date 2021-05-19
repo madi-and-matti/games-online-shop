@@ -30,7 +30,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping("/api")
 public class GameResource {
     private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(
-        Arrays.asList("id", "name", "price", "quantity")
+        Arrays.asList("id", "name", "price", "quantity", "userRating")
     );
 
     private final Logger log = LoggerFactory.getLogger(GameResource.class);
@@ -53,7 +53,7 @@ public class GameResource {
             return ResponseEntity.badRequest().build();
         }
 
-        final Page<Game> page = gameService.getAllGames(pageable);
+        final Page<Game> page = gameService.getAllGamesWithPrice(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

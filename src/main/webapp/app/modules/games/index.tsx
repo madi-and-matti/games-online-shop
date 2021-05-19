@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
-import AllGames from './all-games';
+import AllGames from './games-all';
 import SingleGame from "./single-game";
 
 const Routes = ({ match }) => (

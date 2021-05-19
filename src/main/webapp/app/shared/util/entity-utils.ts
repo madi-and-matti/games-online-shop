@@ -1,5 +1,5 @@
 import pick from 'lodash/pick';
-import { IPaginationBaseState } from 'react-jhipster';
+import { IPaginationBaseState, getUrlParameter } from 'react-jhipster';
 
 /**
  * Removes fields with an 'id' field that equals ''.
@@ -35,4 +35,20 @@ export const overridePaginationStateWithQueryParams = (paginationBaseState: IPag
     paginationBaseState.order = sortSplit[1];
   }
   return paginationBaseState;
+};
+
+export const getSortStateForAllGames = (location, itemsPerPage): IPaginationBaseState => {
+  const pageParam = getUrlParameter('page', location.search);
+  const sortParam = getUrlParameter('sort', location.search);
+  let sort = 'userRating';
+  let order = 'desc';
+  let activePage = 1;
+  if (pageParam !== '' && !isNaN(parseInt(pageParam, 10))) {
+    activePage = parseInt(pageParam, 10);
+  }
+  if (sortParam !== '') {
+    sort = sortParam.split(',')[0];
+    order = sortParam.split(',')[1];
+  }
+  return { itemsPerPage, sort, order, activePage };
 };
