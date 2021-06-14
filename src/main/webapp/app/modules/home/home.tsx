@@ -25,9 +25,8 @@ export const Home = (props: IHomeProp) => {
         ) : (
           <div>
             <Alert color="warning">
-              If you want to
+              If you want to {' '}
               <Link to="/login" className="alert-link">
-                {' '}
                 sign in
               </Link>
               , you can try the default accounts:
