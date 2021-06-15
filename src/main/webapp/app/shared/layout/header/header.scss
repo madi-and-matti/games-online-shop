@@ -1,6 +1,8 @@
 $header-color: #fff;
 $header-color-secondary: #bbb;
-$header-color-hover: darken($header-color, 20%);
+$header-color-hover: darken($header-color, 50%);
+$navbar-dark-color: rgba($header-color, 0.7);
+@import 'node_modules/bootstrap/scss/bootstrap';
 
 /* ==========================================================================
 Developement Ribbon
@@ -38,7 +40,7 @@ Developement Ribbon
 Navbar styles
 ========================================================================== */
 .jh-navbar {
-  background-color: #353d47;
+  background-color: #7f52ff;
   padding: 0.2em 1em;
   .profile-image {
     margin: -10px 0px;
@@ -49,7 +51,7 @@ Navbar styles
   .dropdown-item.active,
   .dropdown-item.active:focus,
   .dropdown-item.active:hover {
-    background-color: #353d47;
+    background-color: #7f52ff;
   }
   .dropdown-toggle::after {
     margin-left: 0.15em;

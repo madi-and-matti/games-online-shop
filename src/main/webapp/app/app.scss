@@ -1,14 +1,31 @@
 // Override Boostrap variables
 // Import Bootstrap source files from node_modules
+$purple-dark: #6c46da;
+$purple-100: #7f52ff;
+$purple-50: #bfa9ff;
+$purple-30: #d9cbff;
+$purple-15: #e5dcff;
+$grey-100: #27282c;
+$grey-50: #939496;
+$grey-20: #d4d4d5;
+$grey-light: #f6f6f7;
 @import 'node_modules/bootstrap/scss/bootstrap';
 body {
-  background: #fafafa;
+  background: #ffffff;
   margin: 0;
+  color: $grey-100;
 }
 
 a {
-  color: #533f03;
-  font-weight: bold;
+  color: $purple-100;
+}
+
+.link {
+  color: $purple-100;
+}
+
+.link:hover {
+  color: $purple-dark;
 }
 
 * {
@@ -31,6 +48,7 @@ a {
     padding: 1rem;
     .card {
       padding: 1rem;
+      border: none;
     }
     .view-routes {
       height: 100%;
@@ -82,6 +100,45 @@ Custom button styles
   }
 }
 
+.btn.btn-primary {
+  background-color: $purple-100;
+  border-color: $purple-100;
+}
+
+.btn.btn-primary:hover {
+  color: #fff;
+  background-color: $purple-dark;
+  border-color: $purple-dark;
+}
+
+.btn.btn-primary:focus,
+.btn.btn-primary.focus {
+  color: #fff;
+  background-color: $purple-dark;
+  border-color: $purple-dark;
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
+
+.btn.btn-light {
+  color: $grey-100;
+  background-color: transparent;
+  border-color: $grey-100;
+}
+
+.btn.btn-light:hover {
+  color: $grey-100;
+  background-color: $grey-light;
+  border-color: $grey-100;
+}
+
+.btn.btn-light:focus,
+.btn.btn-light.focus {
+  color: $grey-100;
+  background-color: $grey-light;
+  border-color: $grey-100;
+  box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);
+}
+
 /* ==========================================================================
 Generic styles
 ========================================================================== */
@@ -111,6 +168,16 @@ Generic styles
 .error {
   color: white;
   background-color: red;
+}
+
+.alert-warning {
+  background-color: $purple-15 !important;
+  border: none !important;
+  color: $grey-100 !important;
+}
+
+.alert-warning .alert-link {
+  color: $grey-100 !important;
 }
 
 .break {
