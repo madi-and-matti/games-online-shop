@@ -1,7 +1,7 @@
 export interface IGame {
   id?: string;
   name?: string;
-  description?: string;
+  description?: IDescription;
   price?: number;
   yearPublished?: number;
   minimumPlayers?: number;
@@ -17,10 +17,18 @@ export interface IGame {
   categories?: any[];
 }
 
+interface IDescription {
+  id?: number;
+  text?: string;
+}
+
 export const defaultValue: Readonly<IGame> = {
   id: '',
   name: '',
-  description: '',
+  description: {
+    id: 0,
+    text: '',
+  },
   price: 0,
   yearPublished: 0,
   minimumPlayers: 0,

@@ -83,6 +83,7 @@ describe('Games reducer tests', () => {
         errorMessage: null,
         games: [] as ReadonlyArray<IGame>,
         totalItems: 0,
+        singleGame: defaultValue,
       };
       const payload = {
         ...initialState,
