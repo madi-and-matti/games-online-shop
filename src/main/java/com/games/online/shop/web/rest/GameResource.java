@@ -61,7 +61,6 @@ public class GameResource {
     @GetMapping("/games/{gameId}")
     public ResponseEntity<Game> getSingleGame(@PathVariable String gameId) {
         Optional<Game> game = gameService.getSingleGame(gameId);
-        //TODO: How do you notify the client on the frontend that the game was not found?
         return game.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

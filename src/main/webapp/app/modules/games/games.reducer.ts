@@ -59,7 +59,6 @@ export default (state: GamesState = initialState, action): GamesState => {
         ...state,
         loading: false,
         singleGame: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case ACTION_TYPES.RESET:
       return {

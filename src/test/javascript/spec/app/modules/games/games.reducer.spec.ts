@@ -6,7 +6,7 @@ import sinon from 'sinon';
 
 import { REQUEST, FAILURE, SUCCESS } from 'app/shared/reducers/action-type.util';
 
-import games, { ACTION_TYPES, getGames, reset } from 'app/modules/games/games.reducer';
+import games, { ACTION_TYPES, getGames, getSingleGame, reset } from 'app/modules/games/games.reducer';
 import { defaultValue, IGame } from 'app/shared/model/game.model';
 
 describe('Games reducer tests', () => {
@@ -40,7 +40,7 @@ describe('Games reducer tests', () => {
   describe('Requests', () => {
     it('should set state to loading', () => {
       // TODO: Add new action types as they are created
-      testMultipleTypes([REQUEST(ACTION_TYPES.FETCH_GAMES)], {}, state => {
+      testMultipleTypes([REQUEST(ACTION_TYPES.FETCH_GAMES), REQUEST(ACTION_TYPES.FETCH_SINGLE_GAME)], {}, state => {
         expect(state).toMatchObject({
           errorMessage: null,
           loading: true,
@@ -52,7 +52,7 @@ describe('Games reducer tests', () => {
   describe('Failures', () => {
     it('should set state to failed and put an error message in errorMessage', () => {
       // TODO: Add new action types as they are created
-      testMultipleTypes([FAILURE(ACTION_TYPES.FETCH_GAMES)], 'something happened', state => {
+      testMultipleTypes([FAILURE(ACTION_TYPES.FETCH_GAMES), FAILURE(ACTION_TYPES.FETCH_SINGLE_GAME)], 'something happened', state => {
         expect(state).toMatchObject({
           loading: false,
           errorMessage: 'something happened',
@@ -71,6 +71,16 @@ describe('Games reducer tests', () => {
         loading: false,
         games: payload.data,
         totalItems: headers['x-total-count'],
+      });
+    });
+
+    it('should update state according to a successful fetch single game request', () => {
+      const payload = { data: 'single game' };
+      const toTest = games(undefined, { type: SUCCESS(ACTION_TYPES.FETCH_SINGLE_GAME), payload });
+
+      expect(toTest).toMatchObject({
+        loading: false,
+        singleGame: payload.data,
       });
     });
   });
@@ -130,6 +140,18 @@ describe('Games reducer tests', () => {
         },
       ];
       await store.dispatch(getGames(1, 20, 'id,desc')).then(() => expect(store.getActions()).toEqual(expectedActions));
+    });
+    it('dispatches FETCH_SINGLE_GAME_PENDING and FETCH_SINGLE_GAME_FULFILLED actions', async () => {
+      const expectedActions = [
+        {
+          type: REQUEST(ACTION_TYPES.FETCH_SINGLE_GAME),
+        },
+        {
+          type: SUCCESS(ACTION_TYPES.FETCH_SINGLE_GAME),
+          payload: resolvedObject,
+        },
+      ];
+      await store.dispatch(getSingleGame('test-id')).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
     it('dispatches ACTION_TYPES.RESET actions', async () => {
       const expectedActions = [
