@@ -2,6 +2,7 @@ package com.games.online.shop.service;
 
 import com.games.online.shop.domain.Game;
 import com.games.online.shop.repository.GameRepository;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -26,5 +27,10 @@ public class GameService {
     @Transactional(readOnly = true)
     public Page<Game> getAllGames(Pageable pageable) {
         return gameRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Game> getSingleGame(String gameId) {
+        return gameRepository.findById(gameId);
     }
 }

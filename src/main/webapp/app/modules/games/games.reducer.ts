@@ -7,6 +7,7 @@ import { IGame, defaultValue } from 'app/shared/model/game.model';
 export const ACTION_TYPES = {
   FETCH_GAMES: 'games/FETCH_GAMES',
   RESET: 'userManagement/RESET',
+  FETCH_SINGLE_GAME: 'games/FETCH_SINGLE_GAME',
 };
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
   errorMessage: null,
   games: [] as ReadonlyArray<IGame>,
   totalItems: 0,
+  singleGame: defaultValue,
 };
 
 export type GamesState = Readonly<typeof initialState>;
@@ -40,6 +42,24 @@ export default (state: GamesState = initialState, action): GamesState => {
         games: action.payload.data,
         totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
+    case REQUEST(ACTION_TYPES.FETCH_SINGLE_GAME):
+      return {
+        ...state,
+        errorMessage: null,
+        loading: true,
+      };
+    case FAILURE(ACTION_TYPES.FETCH_SINGLE_GAME):
+      return {
+        ...state,
+        loading: false,
+        errorMessage: action.payload,
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_SINGLE_GAME):
+      return {
+        ...state,
+        loading: false,
+        singleGame: action.payload.data,
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState,
@@ -55,6 +75,14 @@ export const getGames: ICrudGetAllAction<IGame> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_GAMES,
+    payload: axios.get<IGame>(requestUrl),
+  };
+};
+
+export const getSingleGame: ICrudGetAction<IGame> = (id: string) => {
+  const requestUrl = `${apiUrl}/${id}`;
+  return {
+    type: ACTION_TYPES.FETCH_SINGLE_GAME,
     payload: axios.get<IGame>(requestUrl),
   };
 };
