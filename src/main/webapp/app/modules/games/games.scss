@@ -1,3 +1,12 @@
+$purple-dark: #6c46da;
+$purple-100: #7f52ff;
+$purple-50: #bfa9ff;
+$purple-30: #d9cbff;
+$purple-15: #e5dcff;
+$grey-100: #27282c;
+$grey-50: #939496;
+$grey-20: #d4d4d5;
+$grey-light: #f6f6f7;
 @import 'node_modules/bootstrap/scss/bootstrap';
 
 /* ==========================================================================
@@ -20,4 +29,47 @@ img.card-img-top {
   width: 175px;
   height: 175px;
   object-fit: contain;
+}
+
+/* ==========================================================================
+Single Game Card
+========================================================================== */
+
+.single-game-img {
+  filter: drop-shadow(-15px -15px 0 #d5caff);
+  border: 1px solid black;
+  width: 100%;
+  object-fit: contain;
+}
+
+.content-div {
+  margin-left: 5%;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.cart-quantity-container {
+  border: 1px solid #939496;
+  border-radius: 20px;
+  width: 30%;
+  height: 119px;
+}
+
+.carousel-div {
+  border-bottom: 1px solid gray;
+  border-top: 1px solid gray;
+  height: 200px;
+}
+
+.btn-primary:disabled {
+  background-color: $grey-50;
+  cursor: default;
+  border-color: $grey-50;
+}
+
+.btn-primary[disabled]:hover {
+  background-color: $grey-50;
+  border-color: $grey-50;
 }
