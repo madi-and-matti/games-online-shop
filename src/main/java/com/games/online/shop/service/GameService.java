@@ -25,8 +25,8 @@ public class GameService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Game> getAllGames(Pageable pageable) {
-        return gameRepository.findAll(pageable);
+    public Page<Game> getAllGamesWithPrice(Pageable pageable) {
+        return gameRepository.findAllByPriceNot(pageable, 0L);
     }
 
     @Transactional(readOnly = true)

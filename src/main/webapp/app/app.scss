@@ -14,6 +14,8 @@ body {
   background: #ffffff;
   margin: 0;
   color: $grey-100;
+  font-family: -apple-system, Roboto, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 a {
@@ -26,6 +28,10 @@ a {
 
 .link:hover {
   color: $purple-dark;
+}
+
+.link-component {
+  color: inherit;
 }
 
 * {
@@ -41,8 +47,9 @@ a {
 .app-container {
   box-sizing: border-box;
   .view-container {
+    max-width: 1500px;
     width: 100%;
-    height: calc(100% - 40px);
+    height: calc(100vh - 40px);
     overflow-y: auto;
     overflow-x: hidden;
     padding: 1rem;
@@ -68,6 +75,10 @@ a {
   margin: 5px;
   z-index: 1000;
   padding: 5px 25px 50px 25px !important;
+}
+
+.container-fluid {
+  padding: 15px;
 }
 
 /* ==========================================================================
@@ -134,9 +145,9 @@ Custom button styles
 .btn.btn-light:focus,
 .btn.btn-light.focus {
   color: $grey-100;
-  background-color: $grey-light;
+  background-color: transparent;
   border-color: $grey-100;
-  box-shadow: 0 0 0 0.2rem rgba(216, 217, 219, 0.5);
+  box-shadow: none;
 }
 
 /* ==========================================================================

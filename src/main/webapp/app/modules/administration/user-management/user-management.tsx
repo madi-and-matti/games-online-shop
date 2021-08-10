@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table, Row, Badge } from 'reactstrap';
-import { TextFormat, JhiPagination, JhiItemCount, getSortState } from 'react-jhipster';
+import { Button, Table, Badge } from 'reactstrap';
+import { TextFormat, getSortState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT } from 'app/config/constants';
@@ -10,6 +10,7 @@ import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { getUsers, updateUser } from './user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
+import Pagination from "app/shared/layout/pagination/pagination";
 
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -46,6 +47,7 @@ export const UserManagement = (props: IUserManagementProps) => {
       ...pagination,
       order: pagination.order === 'asc' ? 'desc' : 'asc',
       sort: p,
+      activePage: 1,
     });
 
   const handlePagination = currentPage =>
@@ -163,24 +165,7 @@ export const UserManagement = (props: IUserManagementProps) => {
           ))}
         </tbody>
       </Table>
-      {props.totalItems ? (
-        <div className={users && users.length > 0 ? '' : 'd-none'}>
-          <Row className="justify-content-center">
-            <JhiItemCount page={pagination.activePage} total={totalItems} itemsPerPage={pagination.itemsPerPage} i18nEnabled />
-          </Row>
-          <Row className="justify-content-center">
-            <JhiPagination
-              activePage={pagination.activePage}
-              onSelect={handlePagination}
-              maxButtons={5}
-              itemsPerPage={pagination.itemsPerPage}
-              totalItems={props.totalItems}
-            />
-          </Row>
-        </div>
-      ) : (
-        ''
-      )}
+      <Pagination pagination={pagination} handlePagination={handlePagination} items={users} totalItems={totalItems} />
     </div>
   );
 };
