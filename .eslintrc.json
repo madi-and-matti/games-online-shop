@@ -3,5 +3,13 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "rules": {}
+  "plugins": ["jam3"],
+  "rules": {
+    "jam3/no-sanitizer-with-danger": [
+      2,
+      {
+        "wrapperName": ["cleanText"]
+      }
+    ]
+  }
 }
