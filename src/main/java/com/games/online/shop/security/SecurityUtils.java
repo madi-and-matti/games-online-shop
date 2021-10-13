@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 /**
  * Utility class for Spring Security.
@@ -33,6 +34,26 @@ public final class SecurityUtils {
             return springSecurityUser.getUsername();
         } else if (authentication.getPrincipal() instanceof String) {
             return (String) authentication.getPrincipal();
+        }
+        return null;
+    }
+
+    /**
+     * Get the session id of the current user.
+     *
+     * @return the session id of the current user.
+     */
+    public static Optional<String> getSessionId() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return Optional.ofNullable(extractSessionId(securityContext.getAuthentication()));
+    }
+
+    private static String extractSessionId(Authentication authentication) {
+        if (authentication == null) {
+            return null;
+        } else if (authentication.getDetails() instanceof WebAuthenticationDetails) {
+            WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
+            return details.getSessionId();
         }
         return null;
     }
