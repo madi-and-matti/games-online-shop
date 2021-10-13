@@ -62,6 +62,7 @@ spring:
     jdbc:
       initialize-schema: always
     store-type: jdbc
+    timeout: 259200
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAutoConfiguration,org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration
   application:
